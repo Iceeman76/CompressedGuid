@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CompressedGuid/CompressedGuid.csproj" />
+  <Project Path="CompressedGuidTests/CompressedGuidTests.csproj" />
+</Solution>

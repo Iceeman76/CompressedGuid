@@ -18,7 +18,7 @@ public class CompressedGuidTests
     {
         var applicationId = CompressedGuid.CompressedGuid.Parse(str);
 
-        Assert.That(applicationId.GuidRepresentaion, Is.EqualTo(guid));
+        Assert.That(applicationId.GuidRepresentation, Is.EqualTo(guid));
     }
 
     [TestCaseSource(nameof(TestCases))]
