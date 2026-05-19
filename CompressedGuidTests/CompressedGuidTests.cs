@@ -1,4 +1,5 @@
 using System.Collections;
+using CompressedGuidNet;
 
 namespace CompressedGuidTests;
 
@@ -8,7 +9,7 @@ public class CompressedGuidTests
     [TestCaseSource(nameof(TestCases))]
     public void Should_have_correct_string_representation_when_parsed_from_guid(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.CompressedGuid.Parse(guid);
+        var applicationId = CompressedGuid.Parse(guid);
 
         Assert.That(applicationId.StringRepresentation, Is.EqualTo(str));
     }
@@ -16,7 +17,7 @@ public class CompressedGuidTests
     [TestCaseSource(nameof(TestCases))]
     public void Should_have_correct_guid_representation_when_parsed_from_string(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.CompressedGuid.Parse(str);
+        var applicationId = CompressedGuid.Parse(str);
 
         Assert.That(applicationId.GuidRepresentation, Is.EqualTo(guid));
     }
@@ -24,7 +25,7 @@ public class CompressedGuidTests
     [TestCaseSource(nameof(TestCases))]
     public void Should_override_to_string_when_parsed_from_guid(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.CompressedGuid.Parse(guid);
+        var applicationId = CompressedGuid.Parse(guid);
 
         Assert.That(applicationId.ToString(), Is.EqualTo(str));
     }
@@ -32,7 +33,7 @@ public class CompressedGuidTests
     [TestCaseSource(nameof(TestCases))]
     public void Should_override_to_string_when_parsed_from_string(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.CompressedGuid.Parse(str);
+        var applicationId = CompressedGuid.Parse(str);
 
         Assert.That(applicationId.ToString(), Is.EqualTo(str));
     }
@@ -40,8 +41,8 @@ public class CompressedGuidTests
     [Test]
     public void Should_be_empty()
     {
-        var expected = CompressedGuid.CompressedGuid.Parse("AAAAAAAAAAAAAAAAAAAAAA");
-        Assert.That(CompressedGuid.CompressedGuid.Empty, Is.EqualTo(expected));
+        var expected = CompressedGuid.Parse("AAAAAAAAAAAAAAAAAAAAAA");
+        Assert.That(CompressedGuid.Empty, Is.EqualTo(expected));
     }
 
     [Test]
@@ -49,8 +50,8 @@ public class CompressedGuidTests
     {
         var guid = Guid.NewGuid();
 
-        var applicationId1 = new CompressedGuid.CompressedGuid(guid);
-        var applicationId2 = new CompressedGuid.CompressedGuid(guid);
+        var applicationId1 = new CompressedGuid(guid);
+        var applicationId2 = new CompressedGuid(guid);
 
         Assert.That(applicationId1, Is.EqualTo(applicationId2));
     }
@@ -58,8 +59,8 @@ public class CompressedGuidTests
     [Test]
     public void Should_be_equal_when_created_from_string()
     {
-        var applicationId1 = new CompressedGuid.CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
-        var applicationId2 = new CompressedGuid.CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
+        var applicationId1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
+        var applicationId2 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
 
         Assert.That(applicationId1, Is.EqualTo(applicationId2));
     }
@@ -67,8 +68,8 @@ public class CompressedGuidTests
     [Test]
     public void Should_be_equal_when_created_from_string_and_guid()
     {
-        var applicationId1 = new CompressedGuid.CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
-        var applicationId2 = new CompressedGuid.CompressedGuid(Guid.Parse("9b74987e-1a98-4828-9757-85a5d8aa1c10"));
+        var applicationId1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
+        var applicationId2 = new CompressedGuid(Guid.Parse("9b74987e-1a98-4828-9757-85a5d8aa1c10"));
 
         Assert.That(applicationId1, Is.EqualTo(applicationId2));
     }
@@ -76,7 +77,7 @@ public class CompressedGuidTests
     [Test]
     public void Should_implicitly_convert_from_string_to_application_id()
     {
-        CompressedGuid.CompressedGuid compressedGuid = "fph0m5gaKEiXV4Wl2KocEA";
+        CompressedGuid compressedGuid = "fph0m5gaKEiXV4Wl2KocEA";
 
         Assert.That(compressedGuid.StringRepresentation, Is.EqualTo("fph0m5gaKEiXV4Wl2KocEA"));
     }
@@ -84,7 +85,7 @@ public class CompressedGuidTests
     [Test]
     public void Should_implicitly_convert_from_application_id_to_string()
     {
-        var applicationId = CompressedGuid.CompressedGuid.Parse("fph0m5gaKEiXV4Wl2KocEA");
+        var applicationId = CompressedGuid.Parse("fph0m5gaKEiXV4Wl2KocEA");
         string str = applicationId;
 
         Assert.That(str, Is.EqualTo("fph0m5gaKEiXV4Wl2KocEA"));

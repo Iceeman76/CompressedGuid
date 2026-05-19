@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CompressedGuid\CompressedGuid.csproj"/>
+        <ProjectReference Include="..\CompressedGuidNet\CompressedGuidNet.csproj"/>
     </ItemGroup>
 
 </Project>

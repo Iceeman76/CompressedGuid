@@ -1,4 +1,4 @@
-namespace CompressedGuid;
+namespace CompressedGuidNet;
 
 /// <summary>
 /// Represents a compressed version of a GUID (Globally Unique Identifier).
