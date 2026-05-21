@@ -60,21 +60,45 @@ public readonly record struct CompressedGuid
 
     private static string Encode(Guid guid)
     {
-        var bytes = guid.ToByteArray(bigEndian: false);
-        var base64 = Convert.ToBase64String(bytes);
-        var encoded = base64.Replace("/", "_").Replace("+", "-");
+        Span<byte> bytes = stackalloc byte[16];
+        guid.TryWriteBytes(bytes, bigEndian: false, out _);
+        Span<char> chars = stackalloc char[24];
 
-        return encoded[..22];
+        Convert.TryToBase64Chars(bytes, chars, out _);
+        
+        for (var i = 0; i < 22; i++)
+        {
+            if (chars[i] == '+') chars[i] = '-';
+            else if (chars[i] == '/') chars[i] = '_';
+        }
+
+        return new string(chars[..22]);
     }
 
     private static Guid Decode(string input)
     {
-        var padded = $"{input}==";
-        var decoded = padded.Replace("_", "/").Replace("-", "+");
-        var bytes = Convert.FromBase64String(decoded);
-        var guid = new Guid(bytes);
+        if (string.IsNullOrEmpty(input) || input.Length != 22)
+        {
+            throw new FormatException("Invalid compressed GUID string length");
+        }
 
-        return guid;
+        Span<char> chars = stackalloc char[24];
+        input.AsSpan().CopyTo(chars);
+        
+        chars[22] = '=';
+        chars[23] = '=';
+
+        for (var i = 0; i < 22; i++)
+        {
+            if (chars[i] == '-') chars[i] = '+';
+            else if (chars[i] == '_') chars[i] = '/';
+        }
+
+        Span<byte> bytes = stackalloc byte[16];
+
+        return Convert.TryFromBase64Chars(chars, bytes, out _) 
+            ? new Guid(bytes) 
+            : throw new FormatException("Invalid compressed GUID string");
     }
 
     public override string ToString() => StringRepresentation;

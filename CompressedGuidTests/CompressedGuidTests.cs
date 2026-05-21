@@ -91,6 +91,36 @@ public class CompressedGuidTests
         Assert.That(str, Is.EqualTo("fph0m5gaKEiXV4Wl2KocEA"));
     }
 
+    [Test]
+    public void Should_throw_FormatException_when_input_is_null()
+    {
+        var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(null!));
+        Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
+    }
+
+    [Test]
+    public void Should_throw_FormatException_when_input_is_empty()
+    {
+        var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(string.Empty));
+        Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
+    }
+
+    [Test]
+    [TestCase("fph0m5gaKEiXV4Wl2KocE")]
+    [TestCase("fph0m5gaKEiXV4Wl2KocEAA")]
+    public void Should_throw_FormatException_when_input_has_invalid_length(string input)
+    {
+        var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(input));
+        Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
+    }
+
+    [Test]
+    public void Should_throw_FormatException_when_input_has_invalid_characters()
+    {
+        var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid("!!!!!!!!!!!!!!!!!!!!!!"));
+        Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string"));
+    }
+
     private static IEnumerable TestCases()
     {
         yield return new TestCaseData(Guid.Parse("00000000-0000-0000-0000-000000000000"), "AAAAAAAAAAAAAAAAAAAAAA");
