@@ -105,4 +105,5 @@ public readonly record struct CompressedGuid
 
     public static implicit operator CompressedGuid(string str) => Parse(str);
     public static implicit operator string(CompressedGuid id) => id.ToString();
+    public static implicit operator Guid(CompressedGuid id) => id.GuidRepresentation;
 }

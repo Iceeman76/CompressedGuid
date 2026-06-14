@@ -9,33 +9,33 @@ public class CompressedGuidTests
     [TestCaseSource(nameof(TestCases))]
     public void Should_have_correct_string_representation_when_parsed_from_guid(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.Parse(guid);
+        var id = CompressedGuid.Parse(guid);
 
-        Assert.That(applicationId.StringRepresentation, Is.EqualTo(str));
+        Assert.That(id.StringRepresentation, Is.EqualTo(str));
     }
 
     [TestCaseSource(nameof(TestCases))]
     public void Should_have_correct_guid_representation_when_parsed_from_string(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.Parse(str);
+        var id = CompressedGuid.Parse(str);
 
-        Assert.That(applicationId.GuidRepresentation, Is.EqualTo(guid));
+        Assert.That(id.GuidRepresentation, Is.EqualTo(guid));
     }
 
     [TestCaseSource(nameof(TestCases))]
     public void Should_override_to_string_when_parsed_from_guid(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.Parse(guid);
+        var id = CompressedGuid.Parse(guid);
 
-        Assert.That(applicationId.ToString(), Is.EqualTo(str));
+        Assert.That(id.ToString(), Is.EqualTo(str));
     }
 
     [TestCaseSource(nameof(TestCases))]
     public void Should_override_to_string_when_parsed_from_string(Guid guid, string str)
     {
-        var applicationId = CompressedGuid.Parse(str);
+        var id = CompressedGuid.Parse(str);
 
-        Assert.That(applicationId.ToString(), Is.EqualTo(str));
+        Assert.That(id.ToString(), Is.EqualTo(str));
     }
 
     [Test]
@@ -50,32 +50,32 @@ public class CompressedGuidTests
     {
         var guid = Guid.NewGuid();
 
-        var applicationId1 = new CompressedGuid(guid);
-        var applicationId2 = new CompressedGuid(guid);
+        var id1 = new CompressedGuid(guid);
+        var id2 = new CompressedGuid(guid);
 
-        Assert.That(applicationId1, Is.EqualTo(applicationId2));
+        Assert.That(id1, Is.EqualTo(id2));
     }
 
     [Test]
     public void Should_be_equal_when_created_from_string()
     {
-        var applicationId1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
-        var applicationId2 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
+        var id1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
+        var id2 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
 
-        Assert.That(applicationId1, Is.EqualTo(applicationId2));
+        Assert.That(id1, Is.EqualTo(id2));
     }
 
     [Test]
     public void Should_be_equal_when_created_from_string_and_guid()
     {
-        var applicationId1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
-        var applicationId2 = new CompressedGuid(Guid.Parse("9b74987e-1a98-4828-9757-85a5d8aa1c10"));
+        var id1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
+        var id2 = new CompressedGuid(Guid.Parse("9b74987e-1a98-4828-9757-85a5d8aa1c10"));
 
-        Assert.That(applicationId1, Is.EqualTo(applicationId2));
+        Assert.That(id1, Is.EqualTo(id2));
     }
 
     [Test]
-    public void Should_implicitly_convert_from_string_to_application_id()
+    public void Should_implicitly_convert_from_string_to_compressed_guid()
     {
         CompressedGuid compressedGuid = "fph0m5gaKEiXV4Wl2KocEA";
 
@@ -83,23 +83,86 @@ public class CompressedGuidTests
     }
 
     [Test]
-    public void Should_implicitly_convert_from_application_id_to_string()
+    public void Should_implicitly_convert_empty_string_to_empty_compressed_guid()
     {
-        var applicationId = CompressedGuid.Parse("fph0m5gaKEiXV4Wl2KocEA");
-        string str = applicationId;
+        CompressedGuid compressedGuid = "AAAAAAAAAAAAAAAAAAAAAA";
+
+        Assert.That(compressedGuid, Is.EqualTo(CompressedGuid.Empty));
+    }
+
+    [TestCaseSource(nameof(TestCases))]
+    public void Should_implicitly_convert_from_string_to_compressed_guid_for_all_cases(Guid guid, string str)
+    {
+        CompressedGuid compressedGuid = str;
+
+        Assert.That(compressedGuid.StringRepresentation, Is.EqualTo(str));
+    }
+
+    [Test]
+    public void Should_implicitly_convert_from_compressed_guid_to_string()
+    {
+        var id = CompressedGuid.Parse("fph0m5gaKEiXV4Wl2KocEA");
+        string str = id;
 
         Assert.That(str, Is.EqualTo("fph0m5gaKEiXV4Wl2KocEA"));
     }
 
     [Test]
-    public void Should_throw_FormatException_when_input_is_null()
+    public void Should_implicitly_convert_empty_compressed_guid_to_empty_string()
+    {
+        string str = CompressedGuid.Empty;
+
+        Assert.That(str, Is.EqualTo("AAAAAAAAAAAAAAAAAAAAAA"));
+    }
+
+    [TestCaseSource(nameof(TestCases))]
+    public void Should_implicitly_convert_from_compressed_guid_to_string_for_all_cases(Guid guid, string str)
+    {
+        var id = CompressedGuid.Parse(str);
+
+        string converted = id;
+
+        Assert.That(converted, Is.EqualTo(str));
+    }
+
+    [Test]
+    public void Should_implicitly_convert_from_compressed_guid_to_guid()
+    {
+        var expected = Guid.Parse("9b74987e-1a98-4828-9757-85a5d8aa1c10");
+        var id = CompressedGuid.Parse("fph0m5gaKEiXV4Wl2KocEA");
+
+        Guid guid = id;
+
+        Assert.That(guid, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void Should_implicitly_convert_empty_compressed_guid_to_empty_guid()
+    {
+        Guid guid = CompressedGuid.Empty;
+
+        Assert.That(guid, Is.EqualTo(Guid.Empty));
+    }
+
+    [TestCaseSource(nameof(TestCases))]
+    public void Should_implicitly_convert_from_compressed_guid_to_guid_for_all_cases(Guid guid, string str)
+    {
+        var id = CompressedGuid.Parse(str);
+
+        Guid converted = id;
+
+        Assert.That(converted, Is.EqualTo(guid));
+    }
+
+    [Test]
+    public void Should_throw_when_input_is_null()
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(null!));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
     }
 
     [Test]
-    public void Should_throw_FormatException_when_input_is_empty()
+    public void Should_throw_when_input_is_empty()
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(string.Empty));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
@@ -108,14 +171,14 @@ public class CompressedGuidTests
     [Test]
     [TestCase("fph0m5gaKEiXV4Wl2KocE")]
     [TestCase("fph0m5gaKEiXV4Wl2KocEAA")]
-    public void Should_throw_FormatException_when_input_has_invalid_length(string input)
+    public void Should_throw_when_input_has_invalid_length(string input)
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(input));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
     }
 
     [Test]
-    public void Should_throw_FormatException_when_input_has_invalid_characters()
+    public void Should_throw_when_input_has_invalid_characters()
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid("!!!!!!!!!!!!!!!!!!!!!!"));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string"));
