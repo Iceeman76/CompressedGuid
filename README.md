@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="assets/compressedguid-social-preview.png" alt="CompressedGuid logo" width="1040" />
+</div>
+
 # CompressedGuid
 
 A thread-safe and URL-safe compressed globally unique identifier for .NET.
