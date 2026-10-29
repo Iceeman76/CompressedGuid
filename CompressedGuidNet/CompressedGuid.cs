@@ -1,4 +1,4 @@
-namespace CompressedGuidNet;
+namespace DtoNetLab.CompressedGuidNet;
 
 /// <summary>
 /// Represents a compressed version of a GUID (Globally Unique Identifier).

@@ -1,7 +1,7 @@
 using System.Collections;
-using CompressedGuidNet;
+using DtoNetLab.CompressedGuidNet;
 
-namespace CompressedGuidTests;
+namespace DtoNetLab.CompressedGuidTests;
 
 [TestFixture]
 public class CompressedGuidTests
@@ -23,7 +23,7 @@ public class CompressedGuidTests
     }
 
     [TestCaseSource(nameof(TestCases))]
-    public void Should_override_to_string_when_parsed_from_guid(Guid guid, string str)
+    public void Should_return_compressed_guid_string_when_calling_to_string_after_parsing_guid(Guid guid, string str)
     {
         var id = CompressedGuid.Parse(guid);
 
@@ -31,7 +31,7 @@ public class CompressedGuidTests
     }
 
     [TestCaseSource(nameof(TestCases))]
-    public void Should_override_to_string_when_parsed_from_string(Guid guid, string str)
+    public void Should_return_original_string_when_calling_to_string_after_parsing_string(Guid guid, string str)
     {
         var id = CompressedGuid.Parse(str);
 
@@ -39,14 +39,14 @@ public class CompressedGuidTests
     }
 
     [Test]
-    public void Should_be_empty()
+    public void Should_represent_empty_guid_when_using_empty()
     {
         var expected = CompressedGuid.Parse("AAAAAAAAAAAAAAAAAAAAAA");
         Assert.That(CompressedGuid.Empty, Is.EqualTo(expected));
     }
 
     [Test]
-    public void Should_be_equal_when_created_from_guid()
+    public void Should_be_equal_when_created_from_same_guid()
     {
         var guid = Guid.NewGuid();
 
@@ -57,7 +57,7 @@ public class CompressedGuidTests
     }
 
     [Test]
-    public void Should_be_equal_when_created_from_string()
+    public void Should_be_equal_when_created_from_same_string()
     {
         var id1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
         var id2 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
@@ -66,7 +66,7 @@ public class CompressedGuidTests
     }
 
     [Test]
-    public void Should_be_equal_when_created_from_string_and_guid()
+    public void Should_be_equal_when_created_from_equivalent_string_and_guid()
     {
         var id1 = new CompressedGuid("fph0m5gaKEiXV4Wl2KocEA");
         var id2 = new CompressedGuid(Guid.Parse("9b74987e-1a98-4828-9757-85a5d8aa1c10"));
@@ -83,7 +83,7 @@ public class CompressedGuidTests
     }
 
     [Test]
-    public void Should_implicitly_convert_empty_string_to_empty_compressed_guid()
+    public void Should_implicitly_convert_empty_guid_string_representation_to_empty_compressed_guid()
     {
         CompressedGuid compressedGuid = "AAAAAAAAAAAAAAAAAAAAAA";
 
@@ -108,7 +108,7 @@ public class CompressedGuidTests
     }
 
     [Test]
-    public void Should_implicitly_convert_empty_compressed_guid_to_empty_string()
+    public void Should_implicitly_convert_empty_compressed_guid_to_empty_guid_string_representation()
     {
         string str = CompressedGuid.Empty;
 
@@ -155,14 +155,14 @@ public class CompressedGuidTests
     }
 
     [Test]
-    public void Should_throw_when_input_is_null()
+    public void Should_throw_format_exception_when_input_string_is_null()
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(null!));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
     }
 
     [Test]
-    public void Should_throw_when_input_is_empty()
+    public void Should_throw_format_exception_when_input_is_empty_string()
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(string.Empty));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
@@ -171,14 +171,14 @@ public class CompressedGuidTests
     [Test]
     [TestCase("fph0m5gaKEiXV4Wl2KocE")]
     [TestCase("fph0m5gaKEiXV4Wl2KocEAA")]
-    public void Should_throw_when_input_has_invalid_length(string input)
+    public void Should_throw_format_exception_when_input_string_has_invalid_length(string input)
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid(input));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string length"));
     }
 
     [Test]
-    public void Should_throw_when_input_has_invalid_characters()
+    public void Should_throw_format_exception_when_input_string_has_invalid_characters()
     {
         var ex = Assert.Throws<FormatException>(() => _ = new CompressedGuid("!!!!!!!!!!!!!!!!!!!!!!"));
         Assert.That(ex.Message, Is.EqualTo("Invalid compressed GUID string"));
