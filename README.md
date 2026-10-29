@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/compressedguid-social-preview.png" alt="CompressedGuid logo" width="1040" />
+  <img src="assets/compressedguid-social-preview.jpg" alt="CompressedGuid logo" width="1040" />
 </div>
 
 # CompressedGuid
