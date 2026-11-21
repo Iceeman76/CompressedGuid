@@ -50,4 +50,4 @@ GUID bytes are Base64-encoded with URL-safe substitutions (`+` → `-`, `/` → 
 
 ## Requirements
 
-.NET 10.0
+.NET 11.0
